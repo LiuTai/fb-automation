@@ -5,8 +5,9 @@ Below is what you can do with this program:
 
  ## Install
  1. Make sure you have Chrome browser installed.
- 2. Download [chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and put it into bin folder: `./bin/chromedriver`. Make sure webdriver is the same version as Chrome browser
- 3. Install Selenium: `pip install -r requirements.txt`
+ 2. Python version 3.8
+ 3. Download [chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and put it into bin folder: `./bin/chromedriver`. Make sure webdriver is the same version as Chrome browser
+ 4. Install Selenium: `pip install -r requirements.txt`
 
  ### Usage
 ```
