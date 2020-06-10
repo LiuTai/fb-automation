@@ -66,7 +66,7 @@ class FBCrawler(Logging):
     p_input = browser.find_one('input[name="pass"]')
     p_input.send_keys(password)
     login_btn = browser.find_by_id('u_0_b', waittime=5)
-    login_btn.click()
+    browser.click(elem=login_btn, waittime=3)
     
   def create_group(self, username, password, filepath):
     
@@ -82,16 +82,14 @@ class FBCrawler(Logging):
     else:
       self.log("%s login failed" % (username))
       raise RetryException()
-    msg.click()
+    browser.click(elem=msg, waittime=3)
 
     #Filter group
-    randmized_sleep(5)
     conversation_list = browser.find_one('ul[aria-label="Conversation List"]')
     conversation = browser.find_by_tag(tag_selector='li', elem=conversation_list, waittime=1)
 
     for i in range(len(conversation)):
-      conversation[i].click()
-      randmized_sleep(2)
+      browser.click(elem=conversation[i], waittime=3)
       titles = browser.find_all('h4[class="_1lj0 _6ybm"]', waittime=1)
       for title in titles:
         print(title.text)
@@ -99,6 +97,7 @@ class FBCrawler(Logging):
           index = i+1
           break 
       if index:
+        self.log("Filter group success")
         break
     
     #Add to group
@@ -106,19 +105,16 @@ class FBCrawler(Logging):
     with open('%s/tmp/users.json' % (dir_path)) as f:
       users_to_add = json.load(f)
     for user in users_to_add:
-      print(user)
       add_btn = browser.find_one('div[class="_4rpj"]')
       if add_btn.text == "Add People":
-        add_btn.click()
-      randmized_sleep(3)
+        browser.click(elem=add_btn, waittime=3)
       add_to_group = browser.find_one('input[placeholder="Add to group:"]', waittime=1)
       add_to_group.send_keys(user['username'])
       randmized_sleep(3)
       pick_user = browser.find_all('li[class="_3h3c _5l37"]')[1]
       pick_user.click()
       group_btn = browser.find_one('button[class="_3quh _30yy _2t_ _5ixy"]', waittime=1)
-      group_btn.click()
-      randmized_sleep(3)
+      browser.click(elem=group_btn, waittime=3)
+      self.log("%s added tp group" % (user['username']))
     
-    print("done")
-    return "done"
+    return users_to_add

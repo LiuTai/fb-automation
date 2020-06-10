@@ -34,17 +34,11 @@ class Browser:
             chrome_options=chrome_options,
         )
 
-    def page_height(self):
-        return self.driver.execute_script("return document.body.scrollHeight")
-
     def get(self, url):
         self.driver.get(url)
 
     def current_url(self):
         return self.driver.current_url
-
-    def implicitly_wait(self, t):
-        self.driver.implicitly_wait(t)
     
     def find_one(self, css_selector, elem=None, waittime=0):
         obj = elem or self.driver
@@ -90,20 +84,20 @@ class Browser:
         except NoSuchElementException:
             return None
 
-    def scroll_down(self, wait=0.3):
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-        randmized_sleep(wait)
-
-
-    def scroll_up(self, offset=-1, wait=2):
-        if offset == -1:
-            self.driver.execute_script("window.scrollTo(0, 0)")
-        else:
-            self.driver.execute_script("window.scrollBy(0, -%s)" % offset)
-        randmized_sleep(wait)
 
     def js_click(self, elem):
         self.driver.execute_script("arguments[0].click();", elem)
+
+
+    def click(self, elem=None, waittime=0):
+        obj = elem or self.driver
+        try:
+            res = obj.click()
+            if waittime:
+                randmized_sleep(waittime)
+            return res
+        except NoSuchElementException:
+            return None
 
     def open_new_tab(self, url):
         self.driver.execute_script("window.open('%s');" %url)
